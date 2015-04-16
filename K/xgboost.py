@@ -593,14 +593,14 @@ def train(params, dtrain, num_boost_round=10, evals=(), obj=None, feval=None, ea
         # either minimize loss or maximize AUC/MAP/NDCG
         maximize_score = False
         if 'eval_metric' in params:
-            maximize_metrics = ('auc', 'map', 'ndcg')
+            maximize_metrics = ('auc', 'map', 'ndcg') #map removed
             if filter(lambda x: params['eval_metric'].startswith(x), maximize_metrics):
-                maximize_score = True
+                maximize_score = False # changes
 
         if maximize_score:
             best_score = 0.0
         else:
-            best_score = float('inf')
+            best_score = 999#float('inf')
 
         best_msg = ''
         best_score_i = 0
@@ -617,6 +617,10 @@ def train(params, dtrain, num_boost_round=10, evals=(), obj=None, feval=None, ea
             sys.stderr.write(msg + '\n')
 
             score = float(msg.rsplit(':', 1)[1])
+
+
+            #print(best_score)
+            #print(score)
             if (maximize_score and score > best_score) or \
                     (not maximize_score and score < best_score):
                 best_score = score
